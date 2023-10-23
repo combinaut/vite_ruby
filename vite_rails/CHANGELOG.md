@@ -1,3 +1,21 @@
+## [3.0.17](https://github.com/ElMassimo/vite_ruby/compare/vite_rails@3.0.16...vite_rails@3.0.17) (2023-10-05)
+
+
+### Features
+
+* add vite_picture_tag for Rails 7.1 ([#409](https://github.com/ElMassimo/vite_ruby/issues/409)) ([4e3762a](https://github.com/ElMassimo/vite_ruby/commit/4e3762a978b7879206dbc48137ba525d0d0ad971))
+
+
+
+## [3.0.16](https://github.com/ElMassimo/vite_ruby/compare/vite_rails@3.0.15...vite_rails@3.0.16) (2023-09-22)
+
+
+### Bug Fixes
+
+* emit a single early hint per entrypoint in `vite_preload_tag` ([#402](https://github.com/ElMassimo/vite_ruby/issues/402)) ([3f9a60b](https://github.com/ElMassimo/vite_ruby/commit/3f9a60b4bb28858b8460b5fc302ad352a03ba002))
+
+
+
 ## [3.0.15](https://github.com/ElMassimo/vite_ruby/compare/vite_rails@3.0.14...vite_rails@3.0.15) (2023-06-19)
 
 

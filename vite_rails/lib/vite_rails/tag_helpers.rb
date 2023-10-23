@@ -79,6 +79,19 @@ module ViteRails::TagHelpers
     image_tag(vite_asset_path(name), options)
   end
 
+  # Public: Renders a <picture> tag with one or more Vite asset sources.
+  def vite_picture_tag(*sources, &block)
+    unless Rails.gem_version >= Gem::Version.new('7.1.0')
+      raise NotImplementedError, '`vite_picture_tag` is only available for Rails 7.1 or above.'
+    end
+
+    sources.flatten!
+    options = sources.extract_options!
+
+    vite_sources = sources.map { |src| vite_asset_path(src) }
+    picture_tag(*vite_sources, options, &block)
+  end
+
 private
 
   # Internal: Returns the current manifest loaded by Vite Ruby.
@@ -88,9 +101,14 @@ private
 
   # Internal: Renders a modulepreload link tag.
   def vite_preload_tag(*sources, crossorigin:, **options)
-    sources.map { |source|
-      href = path_to_asset(source)
-      try(:request).try(:send_early_hints, 'Link' => %(<#{ href }>; rel=modulepreload; as=script; crossorigin=#{ crossorigin }))
+    asset_paths = sources.map { |source| path_to_asset(source) }
+    try(:request).try(
+      :send_early_hints,
+      'Link' => asset_paths.map { |href|
+        %(<#{ href }>; rel=modulepreload; as=script; crossorigin=#{ crossorigin })
+      }.join("\n"),
+    )
+    asset_paths.map { |href|
       tag.link(rel: 'modulepreload', href: href, as: 'script', crossorigin: crossorigin, **options)
     }.join("\n").html_safe
   end
