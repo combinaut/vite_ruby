@@ -44,6 +44,7 @@ module ViteRails::TagHelpers
                           media: 'screen',
                           **options)
     entries = vite_manifest.resolve_entries(*names, type: asset_type)
+    options.reverse_merge!(host: ViteRuby.config.asset_host) if ViteRuby.config.asset_host
     tags = javascript_include_tag(*entries.fetch(:scripts), crossorigin: crossorigin, type: type, extname: false, **options)
     tags << vite_preload_tag(*entries.fetch(:imports), crossorigin: crossorigin, **options) unless skip_preload_tags
 
