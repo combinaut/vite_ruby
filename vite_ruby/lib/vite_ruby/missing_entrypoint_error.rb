@@ -5,18 +5,18 @@
 # NOTE: The complexity here is justified by the improved usability of providing
 # a more specific error message depending on the situation.
 class ViteRuby::MissingEntrypointError < ViteRuby::Error
-  extend Forwardable
-  def_delegators :@info, :file_name, :last_build, :manifest, :config
+  attr_reader :file_name, :last_build, :manifest, :config
 
-  def initialize(info)
-    @info = info
+  def initialize(file_name:, last_build:, manifest:, config:)
+    @file_name, @last_build, @manifest, @config = file_name, last_build, manifest, config
     super <<~MSG
-      Vite Ruby can't find #{ file_name } in #{ config.manifest_path.relative_path_from(config.root) } or #{ config.assets_manifest_path.relative_path_from(config.root) }.
+      Vite Ruby can't find #{ file_name } in the manifests.
 
       Possible causes:
       #{ possible_causes(last_build) }
       :troubleshooting:
-      #{ "\nContent in your manifests:\n#{ JSON.pretty_generate(manifest) }\n" if last_build.success }
+      #{ "Manifest files found:\n#{ config.manifest_paths.map { |path| "  #{ path.relative_path_from(config.root) }" }.join("\n") }\n" if last_build.success }
+      #{ "Content in your manifests:\n#{ JSON.pretty_generate(manifest) }\n" if last_build.success }
       #{ "Last build in #{ config.mode } mode:\n#{ last_build.to_json }\n" if last_build.success }
     MSG
   end

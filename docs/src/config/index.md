@@ -26,6 +26,7 @@
 [ssrOutputDir]: /config/#ssroutputdir
 [ssr mode]: https://vitejs.dev/guide/ssr.html#server-side-rendering
 [inertia-ssr]: https://github.com/ElMassimo/inertia-rails-ssr-template
+[deployment]: /guide/deployment.html#deployment-🚀
 
 # Configuring Vite Ruby
 
@@ -268,15 +269,6 @@ You can customize this behavior using the following options.
   "base": "/nested_path"
   ```
 
-### configPath
-
-- **Default:** `config/vite.json`
-- **Env Var:** `VITE_RUBY_CONFIG_PATH`
-
-  Specify where the [JSON config] file is located (relative to <kbd>[root]</kbd>).
-
-  Not supported in the JSON file.
-
 ### devServerConnectTimeout
 
 - **Default:** `0.01` (seconds)
@@ -292,6 +284,18 @@ You can customize this behavior using the following options.
 - **Env Var:** `VITE_RUBY_HIDE_BUILD_CONSOLE_OUTPUT`
 
   Allows to skip Vite build output from logs, to keep the noise down.
+
+### packageManager
+
+- **Default:** auto-detected based on existing lockfiles, otherwise `"npm"`
+- **Env Var:** `VITE_RUBY_PACKAGE_MANAGER`
+
+  Allows to specify which package manager to use, such as:
+
+  - `npm`
+  - `pnpm`
+  - `yarn`
+  - `bun` (experimental)
 
 ### root
 
@@ -331,10 +335,12 @@ You can customize this behavior using the following options.
 
 ### viteBinPath
 
-- **Default:** `node_modules/.bin/vite`
+- **Default:** `null`
 - **Env Var:** `VITE_RUBY_VITE_BIN_PATH`
 
   The path where the Vite.js binary is installed. It will be used to execute the `dev` and `build` commands.
+
+  These commands are executed by your package manager unless this variable is defined.
 
 ### watchAdditionalPaths
 
@@ -362,6 +368,48 @@ You can customize this behavior using the following options.
     },
   })
   ```
+## ENV-Only Options
+
+### `config_path`
+
+- **Default:** `config/vite.json`
+- **Env Var:** `VITE_RUBY_CONFIG_PATH`
+
+  Specify where the [JSON config] file is located (relative to <kbd>[root]</kbd>).
+
+### `skip_assets_precompile_extension`
+
+- **Default:** `false`
+- **Env Var:** `VITE_RUBY_SKIP_ASSETS_PRECOMPILE_EXTENSION`
+
+  When enabled, `vite:build` won't be run [automatically][deployment]
+  when the `assets:precompile` rake task is run, allowing you to fully customize
+  your deployment.
+
+### `skip_assets_precompile_install`
+
+- **Version Added:** `3.6.0`
+- **Default:** `false`
+- **Env Var:** `VITE_RUBY_SKIP_ASSETS_PRECOMPILE_INSTALL`
+
+  When enabled, `assets:precompile` won't invoke `vite:install_dependencies`
+  before invoking `vite:build`.
+
+  This can be useful in CI setups where all node dependencies necessary for the
+  Vite build have already been installed in a previous step.
+
+### `skip_install_dev_dependencies`
+
+- **Version Added:** `3.3.3`
+- **Default:** `false`
+- **Env Var:** `VITE_RUBY_SKIP_INSTALL_DEV_DEPENDENCIES`
+
+  When enabled, the `vite:install_dependencies` rake task will also install
+  development dependencies, which is usually necessary in order to run a Vite build.
+
+  By adding Vite and its plugins (plus other tools such as ESLint) as development
+  dependencies, you can easily prune them after assets have been precompiled.
+
 ## SSR Options (experimental)
 
 _Vite Ruby_ supports building your app in [SSR mode], obtaining a Node.js app

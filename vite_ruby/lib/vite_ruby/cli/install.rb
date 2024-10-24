@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 require 'stringio'
+require 'json'
 
 class ViteRuby::CLI::Install < Dry::CLI::Command
   desc 'Performs the initial configuration setup to get started with Vite Ruby.'
 
-  def call(**)
+  option(:package_manager, values: %w[npm pnpm yarn bun], aliases: %w[package-manager with], desc: 'The package manager to use when installing JS dependencies.')
+
+  def call(package_manager: nil, **)
+    ENV['VITE_RUBY_PACKAGE_MANAGER'] ||= package_manager if package_manager
+
     $stdout.sync = true
 
     say 'Creating binstub'
@@ -79,9 +84,20 @@ private
   # Internal: Installs vite and vite-plugin-ruby at the project level.
   def install_js_dependencies
     package_json = root.join('package.json')
-    write(package_json, '{}') unless package_json.exist?
-    deps = js_dependencies.join(' ')
-    run_with_capture("#{ npm_install } -D #{ deps }", stdin_data: "\n")
+    unless package_json.exist?
+      write package_json, <<~JSON
+        {
+          "private": true,
+          "type": "module"
+        }
+      JSON
+    end
+
+    if (JSON.parse(package_json.read)['type'] != 'module' rescue nil)
+      FileUtils.mv root.join('vite.config.ts'), root.join('vite.config.mts'), force: true, verbose: true
+    end
+
+    install_js_packages js_dependencies.join(' ')
   end
 
   # Internal: Adds compilation output dirs to git ignore.
@@ -115,12 +131,8 @@ private
     end
   end
 
-  # Internal: Support all popular package managers.
-  def npm_install
-    return 'yarn add' if root.join('yarn.lock').exist?
-    return 'pnpm install' if root.join('pnpm-lock.yaml').exist?
-
-    'npm install'
+  def install_js_packages(deps)
+    run_with_capture("#{ config.package_manager } add -D #{ deps }", stdin_data: "\n")
   end
 
   # Internal: Avoid printing warning about missing vite.json, we will create one.

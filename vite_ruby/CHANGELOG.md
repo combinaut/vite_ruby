@@ -1,3 +1,113 @@
+# [3.9.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.8.3...vite_ruby@3.9.0) (2024-10-11)
+
+
+### Bug Fixes
+
+* enforce vite 5 manifest location ([#432](https://github.com/ElMassimo/vite_ruby/issues/432)) ([ce2df58](https://github.com/ElMassimo/vite_ruby/commit/ce2df5859018b3e305fc1a13443199d268dffca8)), closes [/github.com/ElMassimo/vite_ruby/blob/main/vite_ruby/lib/vite_ruby/builder.rb#L16](https://github.com//github.com/ElMassimo/vite_ruby/blob/main/vite_ruby/lib/vite_ruby/builder.rb/issues/L16)
+
+
+
+## [3.8.3](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.8.2...vite_ruby@3.8.3) (2024-10-11)
+
+
+### Bug Fixes
+
+* add `logger` as a runtime dependency rather than default gem ([#502](https://github.com/ElMassimo/vite_ruby/issues/502)) ([6abbccf](https://github.com/ElMassimo/vite_ruby/commit/6abbccf7224f99944c0fe63245f0e84f45fce89f))
+
+
+
+## [3.8.2](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.8.1...vite_ruby@3.8.2) (2024-09-05)
+
+
+### Bug Fixes
+
+* bump up expected plugin version ([b8dec4f](https://github.com/ElMassimo/vite_ruby/commit/b8dec4f5b516fe2acc63e980b465987c0c2c9c92)), closes [#493](https://github.com/ElMassimo/vite_ruby/issues/493)
+
+
+
+## [3.8.1](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.8.0...vite_ruby@3.8.1) (2024-09-04)
+
+
+### Bug Fixes
+
+* actually run vite inside bun ([#492](https://github.com/ElMassimo/vite_ruby/issues/492)) ([36d3e96](https://github.com/ElMassimo/vite_ruby/commit/36d3e96a6ea9bd9f45881cecb5be78510d6ff017))
+
+
+
+# [3.8.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.7.0...vite_ruby@3.8.0) (2024-08-12)
+
+
+### Bug Fixes
+
+* remove `vite:clean` rake task as it can potentially break apps ([824b4ef](https://github.com/ElMassimo/vite_ruby/commit/824b4ef8397828423d2ddda117bf27e365954961)), closes [#438](https://github.com/ElMassimo/vite_ruby/issues/438) [#490](https://github.com/ElMassimo/vite_ruby/issues/490) [#404](https://github.com/ElMassimo/vite_ruby/issues/404)
+
+
+### Features
+
+* remove `ostruct` dependency (closes [#489](https://github.com/ElMassimo/vite_ruby/issues/489)) ([1dfec47](https://github.com/ElMassimo/vite_ruby/commit/1dfec4759bf2c107433c5f1618d97439f6d5bd01))
+
+
+
+# [3.7.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.6.2...vite_ruby@3.7.0) (2024-07-17)
+
+
+### Features
+
+* add `package_manager` config option, experimental support for bun ([#481](https://github.com/ElMassimo/vite_ruby/issues/481)) ([4426cb1](https://github.com/ElMassimo/vite_ruby/commit/4426cb1007dbb58f4637a4423b1e7d640db96841)), closes [#324](https://github.com/ElMassimo/vite_ruby/issues/324)
+* change default execution to use `npx vite` instead ([#480](https://github.com/ElMassimo/vite_ruby/issues/480)) ([330f61f](https://github.com/ElMassimo/vite_ruby/commit/330f61fedadf1274547a069856125e52002d0065)), closes [#462](https://github.com/ElMassimo/vite_ruby/issues/462)
+
+
+
+## [3.6.2](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.6.1...vite_ruby@3.6.2) (2024-07-16)
+
+
+
+## [3.6.1](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.6.0...vite_ruby@3.6.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* use ESM by default in new installations ([#479](https://github.com/ElMassimo/vite_ruby/issues/479)) ([cc379ca](https://github.com/ElMassimo/vite_ruby/commit/cc379ca613dd4e5863f8556be62ea623b56cfe0c)), closes [#431](https://github.com/ElMassimo/vite_ruby/issues/431)
+
+
+
+# [3.6.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.5.0...vite_ruby@3.6.0) (2024-06-07)
+
+
+### Features
+
+* allow skipping dependency install in assets:precompile ([#451](https://github.com/ElMassimo/vite_ruby/issues/451)) ([5a922b2](https://github.com/ElMassimo/vite_ruby/commit/5a922b2071446e3880b17503474a0c7806eab6a7))
+
+
+
+# [3.5.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.4.0...vite_ruby@3.5.0) (2023-11-16)
+
+
+### Bug Fixes
+
+* prevent clean from deleting assets referenced in the manifests ([8a581c1](https://github.com/ElMassimo/vite_ruby/commit/8a581c15ff480049bbb14dab1b5a3497308521b5))
+
+
+### Features
+
+* use vite 5 in new installations ([f063f28](https://github.com/ElMassimo/vite_ruby/commit/f063f283f939d15b3c48c1a9b6efcd589fafbaf1))
+
+
+
+# [3.4.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.3.4...vite_ruby@3.4.0) (2023-11-16)
+
+
+### Bug Fixes
+
+* **breaking:** check for any existing manifest path before cleaning ([c450483](https://github.com/ElMassimo/vite_ruby/commit/c4504839e11006d50d6503288469cb3de0c6a9cd))
+
+
+### Features
+
+* add support for vite 5, which changed default manifest path ([818132a](https://github.com/ElMassimo/vite_ruby/commit/818132a07af3f17ba27ae09c44fcd59029064238))
+
+
+
 ## [3.3.4](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.3.3...vite_ruby@3.3.4) (2023-06-27)
 
 

@@ -30,7 +30,7 @@ class EngineRakeTasksTest < ViteRuby::Test
 
     within_mounted_app { `bundle exec rake app:vite:build` }
     assert_path_exists app_public_dir
-    assert_path_exists app_public_dir.join('manifest.json')
+    assert_path_exists app_public_dir.join('.vite/manifest.json')
     assert_path_exists app_public_dir.join('assets')
     refute_path_exists app_ssr_dir
 
@@ -38,15 +38,9 @@ class EngineRakeTasksTest < ViteRuby::Test
     app_frontend_dir.join('ssr/ssr.js').write(SSR_ENTRYPOINT)
 
     within_mounted_app { `bundle exec rake app:vite:build_all` }
-    assert_path_exists app_ssr_dir.join('ssr.mjs')
-    refute_path_exists app_ssr_dir.join('manifest.json')
-    refute_path_exists app_ssr_dir.join('manifest-assets.json')
-
-    within_mounted_app { `bundle exec rake app:vite:clean` }
-    assert_path_exists app_public_dir.join('manifest.json') # Still fresh
-
-    within_mounted_app { `bundle exec rake app:vite:clean[0,0]` }
-    refute_path_exists app_public_dir.join('manifest.json')
+    assert_path_exists app_ssr_dir.join('ssr.js')
+    refute_path_exists app_ssr_dir.join('.vite/manifest.json')
+    refute_path_exists app_ssr_dir.join('.vite/manifest-assets.json')
 
     within_mounted_app { `bundle exec rake app:vite:clobber` }
     refute_path_exists app_public_dir
@@ -61,7 +55,7 @@ class EngineRakeTasksTest < ViteRuby::Test
 
     within_mounted_app_root { `bin/vite build --mode development` }
     assert_path_exists app_public_dir
-    assert_path_exists app_public_dir.join('manifest.json')
+    assert_path_exists app_public_dir.join('.vite/manifest.json')
     assert_path_exists app_public_dir.join('assets')
 
     within_mounted_app_root { assert_includes `bin/vite version`, ViteRails::VERSION }
@@ -89,7 +83,7 @@ class EngineRakeTasksTest < ViteRuby::Test
       }
 
       FileUtils.mkdir_p(app_ssr_dir.to_s)
-      ssr_path = app_ssr_dir.join('ssr.mjs')
+      ssr_path = app_ssr_dir.join('ssr.js')
       ssr_path.write('')
       stub_kernel_exec('node', ssr_path.to_s) {
         ViteRuby::CLI::SSR.new.call(mode: ViteRuby.mode)
@@ -180,7 +174,7 @@ private
     [app_frontend_dir, app_public_dir, app_ssr_dir, tmp_dir].each do |dir|
       dir.rmtree if dir.exist?
     end
-    root_dir.join('app/views/layouts/application.html.erb').write(Pathname.new(test_app_path).join('app/views/layouts/application.html.erb').read)
+    root_dir.join('app/views/layouts/application.html.erb').write(Pathname.new(path_to_test_app).join('app/views/layouts/application.html.erb').read)
     gitignore_path.write('')
     @command_results = []
   end

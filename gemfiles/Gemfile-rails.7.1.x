@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 7.1.0'
 
 gemspec path: '../vite_ruby'
 gemspec path: '../vite_rails'

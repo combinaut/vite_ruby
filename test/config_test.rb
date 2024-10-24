@@ -15,7 +15,7 @@ class ConfigTest < ViteRuby::Test
     assert_equal Pathname.new(expand_path("test_app/#{ expected }")), actual
   end
 
-  def resolve_config(mode: 'production', root: test_app_path, **attrs)
+  def resolve_config(mode: 'production', root: path_to_test_app, **attrs)
     ViteRuby::Config.resolve_config(mode: mode, root: root, **attrs)
   end
 
@@ -61,7 +61,7 @@ class ConfigTest < ViteRuby::Test
   end
 
   def test_manifest_path
-    assert_path 'test_app/public/vite-production/manifest.json', @config.manifest_path
+    assert_path 'test_app/public/vite-production/.vite/manifest.json', @config.manifest_paths.first
   end
 
   def test_build_cache_dir

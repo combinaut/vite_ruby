@@ -212,7 +212,7 @@ private
 
   # Internal: Raises a detailed message when an entry is missing in the manifest.
   def missing_entry_error(name, **options)
-    raise ViteRuby::MissingEntrypointError, OpenStruct.new(
+    raise ViteRuby::MissingEntrypointError.new(
       file_name: resolve_entry_name(name, **options),
       last_build: builder.last_build_metadata,
       manifest: @manifest,
