@@ -55,9 +55,6 @@ end
 
 unless ENV['VITE_RUBY_SKIP_ASSETS_PRECOMPILE_EXTENSION'] == 'true'
   if Rake::Task.task_defined?('assets:precompile')
-<<<<<<< HEAD
-    Rake::Task['assets:precompile'].enhance(['vite:install_dependencies', 'vite:build_all'])
-=======
     Rake::Task['assets:precompile'].enhance do |task|
       prefix = task.name.split(/#|assets:precompile/).first
       unless ENV['VITE_RUBY_SKIP_ASSETS_PRECOMPILE_INSTALL'] == 'true'
@@ -65,7 +62,6 @@ unless ENV['VITE_RUBY_SKIP_ASSETS_PRECOMPILE_EXTENSION'] == 'true'
       end
       Rake::Task["#{ prefix }vite:build_all"].invoke
     end
->>>>>>> upstream/main
   else
     desc 'Bundle Vite assets'
     if ENV['VITE_RUBY_SKIP_ASSETS_PRECOMPILE_INSTALL'] == 'true'
