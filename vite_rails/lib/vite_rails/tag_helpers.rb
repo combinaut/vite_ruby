@@ -3,10 +3,10 @@
 # Public: Allows to render HTML tags for scripts and styles processed by Vite.
 module ViteRails::TagHelpers
   # Public: Renders a script tag for vite/client to enable HMR in development.
-  def vite_client_tag(crossorigin: 'anonymous', **options)
+  def vite_client_tag(crossorigin: "anonymous", **options)
     return unless src = vite_manifest.vite_client_src
 
-    javascript_include_tag(src, type: 'module', extname: false, crossorigin: crossorigin, **options)
+    javascript_include_tag(src, type: "module", extname: false, crossorigin: crossorigin, **options)
   end
 
   # Public: Renders a script tag to enable HMR with React Refresh.
@@ -36,13 +36,13 @@ module ViteRails::TagHelpers
 
   # Public: Renders a <script> tag for the specified Vite entrypoints.
   def vite_javascript_tag(*names,
-                          type: 'module',
-                          asset_type: :javascript,
-                          skip_preload_tags: false,
-                          skip_style_tags: false,
-                          crossorigin: 'anonymous',
-                          media: 'screen',
-                          **options)
+    type: "module",
+    asset_type: :javascript,
+    skip_preload_tags: false,
+    skip_style_tags: false,
+    crossorigin: "anonymous",
+    media: "screen",
+    **options)
     entries = vite_manifest.resolve_entries(*names, type: asset_type)
     options.reverse_merge!(host: ViteRuby.config.asset_host) if ViteRuby.config.asset_host
     tags = javascript_include_tag(*entries.fetch(:scripts), crossorigin: crossorigin, type: type, extname: false, **options)
@@ -73,8 +73,8 @@ module ViteRails::TagHelpers
   def vite_image_tag(name, **options)
     if options[:srcset] && !options[:srcset].is_a?(String)
       options[:srcset] = options[:srcset].map do |src_name, size|
-        "#{ vite_asset_path(src_name) } #{ size }"
-      end.join(', ')
+        "#{vite_asset_path(src_name)} #{size}"
+      end.join(", ")
     end
 
     image_tag(vite_asset_path(name), options)
@@ -82,8 +82,8 @@ module ViteRails::TagHelpers
 
   # Public: Renders a <picture> tag with one or more Vite asset sources.
   def vite_picture_tag(*sources, &block)
-    unless Rails.gem_version >= Gem::Version.new('7.1.0')
-      raise NotImplementedError, '`vite_picture_tag` is only available for Rails 7.1 or above.'
+    unless Rails.gem_version >= Gem::Version.new("7.1.0")
+      raise NotImplementedError, "`vite_picture_tag` is only available for Rails 7.1 or above."
     end
 
     sources.flatten!
@@ -102,16 +102,16 @@ private
 
   # Internal: Renders a modulepreload link tag.
   def vite_preload_tag(*sources, crossorigin:, **options)
-    url_options, tag_options = options.partition { |key, _| %i[host protocol].include?(key) }.map(&:to_h)
-    asset_paths = sources.map { |source| path_to_asset(source, url_options) }
+    url_options = options.extract!(:host, :protocol)
+    asset_paths = sources.map { |source| path_to_asset(source, **url_options) }
     try(:request).try(
       :send_early_hints,
-      'Link' => asset_paths.map { |href|
-        %(<#{ href }>; rel=modulepreload; as=script; crossorigin=#{ crossorigin })
+      "Link" => asset_paths.map { |href|
+        %(<#{href}>; rel=modulepreload; as=script; crossorigin=#{crossorigin})
       }.join("\n"),
     )
     asset_paths.map { |href|
-      tag.link(rel: 'modulepreload', href: href, as: 'script', crossorigin: crossorigin, **tag_options)
+      tag.link(rel: "modulepreload", href: href, as: "script", crossorigin: crossorigin, **options)
     }.join("\n").html_safe
   end
 end

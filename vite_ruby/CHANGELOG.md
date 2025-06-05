@@ -1,3 +1,21 @@
+## [3.9.2](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.9.1...vite_ruby@3.9.2) (2025-03-26)
+
+
+### Features
+
+* update `detect_package_manager` to look for new Bun lockfile ([#530](https://github.com/ElMassimo/vite_ruby/issues/530)) ([eca05a3](https://github.com/ElMassimo/vite_ruby/commit/eca05a3021250736776746e4711066a1e00fde68))
+
+
+
+## [3.9.1](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.9.0...vite_ruby@3.9.1) (2024-11-21)
+
+
+### Performance Improvements
+
+* avoid calling `uniq` on array of hashes ([3e6ad00](https://github.com/ElMassimo/vite_ruby/commit/3e6ad001be6baacdec0597d33bc220d4242521af)), closes [#416](https://github.com/ElMassimo/vite_ruby/issues/416)
+
+
+
 # [3.9.0](https://github.com/ElMassimo/vite_ruby/compare/vite_ruby@3.8.3...vite_ruby@3.9.0) (2024-10-11)
 
 
