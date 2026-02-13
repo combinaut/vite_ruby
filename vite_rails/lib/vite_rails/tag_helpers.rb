@@ -108,7 +108,7 @@ private
       :send_early_hints,
       "Link" => asset_paths.map { |href|
         %(<#{href}>; rel=modulepreload; as=script; crossorigin=#{crossorigin})
-      }.join("\n"),
+      }.join(","),
     )
     asset_paths.map { |href|
       tag.link(rel: "modulepreload", href: href, as: "script", crossorigin: crossorigin, **options)
